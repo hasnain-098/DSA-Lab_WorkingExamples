@@ -3,11 +3,9 @@
  * Date     : 14/12/2024
  */
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
 
-public class CheckTypeOfBinaryTree {
+public class CalculateLevelOfBinaryTree {
 
     private Node root;
 
@@ -66,64 +64,19 @@ public class CheckTypeOfBinaryTree {
         System.out.print(node.data + " ");
     }
 
-    // Task 2: Check whether a given tree is complete tree, full tree or both.
-    public void checkTypeOfTree(Node root) {
+    // Task 1: Calculate level of the binary tree.
+    public int calculateLevel(Node root) {
 
         if (root == null) {
-            System.out.println("Given tree is empty!");
-            return;
+            return 0;
         }
 
-        boolean isFullTree = isFullTree(root);
-        boolean isCompleteTree = isCompleteTree(root);
-
-        if (isCompleteTree && isFullTree) {
-            System.out.println("Given tree is Full Tree as well as Complete Tree");
-        } else if (isFullTree) {
-            System.out.println("Given tree is Full Tree");
-        } else if (isCompleteTree) {
-            System.out.println("Given tree is Complete Tree");
-        }
-    }
-    public boolean isFullTree(Node root) {
-
-        if (root == null) {
-            return true;
-        }
-
-        if ((root.left != null && root.right == null) || (root.right != null && root.left == null)) {
-            return false;
-        }
-
-        return isFullTree(root.left) && isFullTree(root.right);
-    }
-    public boolean isCompleteTree(Node root) {
-        if (root == null) {
-            return true;
-        }
-
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(root);
-        boolean gotNull = false;
-        while (!queue.isEmpty()) {
-            Node current = queue.poll();
-            if (current == null) {
-                gotNull = true;
-            } else {
-                if (gotNull) {
-                    return false;
-                }
-                queue.add(current.left);
-                queue.add(current.right);
-            }
-        }
-
-        return true;
+        return Math.max(calculateLevel(root.left), calculateLevel(root.right)) + 1;
     }
 
     public static void main(String[] args) {
 
-        CheckTypeOfBinaryTree bt = new CheckTypeOfBinaryTree();
+        CalculateLevelOfBinaryTree bt = new CalculateLevelOfBinaryTree();
         bt.root = new Node(5);
         bt.root.left = new Node(4);
         bt.root.right = new Node(11);
@@ -142,7 +95,7 @@ public class CheckTypeOfBinaryTree {
         bt.printPostOrder(bt.root);
         System.out.println();
 
-        // Task 2
-        bt.checkTypeOfTree(bt.root);
+        // Task 1
+        System.out.println("Level: " + bt.calculateLevel(bt.root));
     }
 }
